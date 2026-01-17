@@ -10,6 +10,7 @@ This project showcases **systems-level thinking** by implementing:
 - **Stack usage analysis** to identify memory safety risks
 - **Stack overflow detection** through proactive monitoring
 - **Task state tracking** to understand RTOS scheduling behavior
+- **Priority stress testing** to demonstrate scheduling behavior under CPU pressure
 
 ## 🧠 Why This Matters
 
@@ -22,20 +23,22 @@ In embedded systems and real-time operating systems, understanding task behavior
 
 This directly maps to **OS/RTOS internals** and demonstrates understanding of:
 - Task scheduling and preemption
+- Priority inversion awareness and scheduling pressure analysis
 - Stack vs heap memory management
 - System introspection and observability
 - Safety-first design principles
 
 ## 🏗️ Architecture
 
-The application creates multiple worker tasks with different stack sizes and work patterns, then uses a dedicated monitoring task to periodically analyze:
+The application creates multiple worker tasks with different stack sizes and work patterns, including a high-priority stress test task that creates CPU pressure through busy loops. A dedicated monitoring task periodically analyzes:
 
 1. **Task States**: Running, Ready, Blocked, Suspended
 2. **Stack High-Water Marks**: Remaining stack space for each task
 3. **Task Priorities**: Current priority levels
 4. **Runtime Statistics**: Total system runtime
+5. **Scheduling Behavior**: How tasks behave under priority pressure
 
-The monitor identifies tasks with low stack remaining and flags them as warnings or critical risks.
+The monitor identifies tasks with low stack remaining and flags them as warnings or critical risks. The high-priority task demonstrates scheduling behavior under CPU pressure, showing how the RTOS scheduler handles priority-based preemption.
 
 ## 📋 Features
 
@@ -45,6 +48,7 @@ The monitor identifies tasks with low stack remaining and flags them as warnings
 - ✅ Runtime statistics collection
 - ✅ Multiple task demonstration with varying stack sizes
 - ✅ Stack overflow hook implementation
+- ✅ **Priority stress test** - High-priority task with busy loops demonstrates scheduling behavior under CPU pressure
 
 ## 🔧 Configuration
 
@@ -95,13 +99,14 @@ FreeRTOS Task Monitoring & Stack Analyzer
 --- Task Status Report ---
 Task Name            | State        | Stack HW Mark   | Priority  
 ------------------------------------------------------------
-MonitorTask          | Running      | 1800            | 3         
+HighPriorityTask     | Running      | 950             | 4         
+MonitorTask          | Ready        | 1800            | 3         
 WorkerTask1          | Ready        | 850             | 2         
 WorkerTask2          | Blocked      | 920             | 2         
 SmallStackTask       | Ready        | 180             | 2         [WARNING]
 
 Total Runtime: 50000 ticks
-Total Tasks: 4
+Total Tasks: 5
 ```
 
 ## 🔍 Key Implementation Details
@@ -124,6 +129,21 @@ FreeRTOS is configured with `configCHECK_FOR_STACK_OVERFLOW 2`, which:
 ### Memory Safety
 
 The monitor allocates memory for task status arrays using `pvPortMalloc()`, demonstrating proper heap usage in an RTOS environment.
+
+### Priority Stress Testing
+
+A high-priority task (`HighPriorityTask`) runs busy loops with minimal delays, creating CPU pressure and demonstrating:
+
+- **Priority-based scheduling**: Higher priority tasks preempt lower priority ones
+- **Scheduling pressure analysis**: How the system behaves under CPU load
+- **Priority inversion awareness**: Understanding when lower-priority tasks may be starved
+
+This is particularly relevant for **Apple interview discussions** about OS scheduling, as it demonstrates practical understanding of:
+- Task preemption behavior
+- CPU utilization under priority pressure
+- Real-time scheduling guarantees
+
+The monitoring task shows how lower-priority tasks (WorkerTask1, WorkerTask2) spend more time in "Ready" state when the high-priority task is active, while the high-priority task dominates "Running" state.
 
 ## 📝 Technical Highlights
 

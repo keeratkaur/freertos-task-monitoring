@@ -13,8 +13,9 @@
 #include "timers.h"
 
 /* Task priorities */
-#define MONITOR_TASK_PRIORITY    (tskIDLE_PRIORITY + 2)
-#define WORKER_TASK_PRIORITY     (tskIDLE_PRIORITY + 1)
+#define HIGH_PRIORITY_TASK_PRIORITY  (tskIDLE_PRIORITY + 3)  /* Highest priority - stress test */
+#define MONITOR_TASK_PRIORITY         (tskIDLE_PRIORITY + 2)
+#define WORKER_TASK_PRIORITY          (tskIDLE_PRIORITY + 1)
 
 /* Stack sizes */
 #define MONITOR_STACK_SIZE       2048
@@ -22,6 +23,7 @@
 #define SMALL_STACK_SIZE         512  /* Intentionally small to demonstrate overflow detection */
 
 /* Task handles */
+static TaskHandle_t xHighPriorityTaskHandle = NULL;
 static TaskHandle_t xWorkerTaskHandle1 = NULL;
 static TaskHandle_t xWorkerTaskHandle2 = NULL;
 static TaskHandle_t xSmallStackTaskHandle = NULL;
@@ -88,6 +90,27 @@ void vWorkerTask2(void *pvParameters)
         
         counter++;
         vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(3000));
+    }
+}
+
+/* High-priority stress test task - demonstrates scheduling pressure */
+void vHighPriorityTask(void *pvParameters)
+{
+    const char *taskName = "HighPriorityTask";
+    
+    printf("[%s] Started (HIGH PRIORITY - CPU stress test)\n", taskName);
+    
+    for(;;)
+    {
+        /* Simulate CPU pressure with busy loop */
+        /* This creates scheduling pressure and demonstrates priority behavior */
+        for(volatile int i = 0; i < 1000000; i++)
+        {
+            /* Busy wait - prevents compiler optimization */
+        }
+        
+        /* Minimal delay - keeps task ready most of the time */
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
@@ -217,6 +240,16 @@ int main(void)
     printf("FreeRTOS Task Monitoring & Stack Analyzer\n");
     printf("========================================\n");
     printf("\n");
+    
+    /* Create high-priority stress test task */
+    xTaskCreate(
+        vHighPriorityTask,
+        "HighPriorityTask",
+        WORKER_STACK_SIZE,
+        NULL,
+        HIGH_PRIORITY_TASK_PRIORITY,
+        &xHighPriorityTaskHandle
+    );
     
     /* Create worker tasks */
     xTaskCreate(
