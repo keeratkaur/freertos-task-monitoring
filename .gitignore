@@ -1,0 +1,33 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.exe
+freertos_monitor
+freertos_monitor.exe
+
+# FreeRTOS source (if cloned as submodule or copied)
+FreeRTOS/
+FreeRTOS-*/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*.tmp
+*.log
+
