@@ -2,7 +2,7 @@
 
 A real-time system monitoring tool that analyzes task behavior, stack usage, and detects potential stack overflow conditions in FreeRTOS-based applications.
 
-## 🎯 What This Project Demonstrates
+## What This Project Demonstrates
 
 This project showcases **systems-level thinking** by implementing:
 
@@ -11,7 +11,7 @@ This project showcases **systems-level thinking** by implementing:
 - **Stack overflow detection** through proactive monitoring
 - **Task state tracking** to understand RTOS scheduling behavior
 
-## 🧠 Why This Matters
+## Why This Matters
 
 In embedded systems and real-time operating systems, understanding task behavior is critical for:
 
@@ -26,7 +26,7 @@ This directly maps to **OS/RTOS internals** and demonstrates understanding of:
 - System introspection and observability
 - Safety-first design principles
 
-## 🏗️ Architecture
+## Architecture
 
 The application creates multiple worker tasks with different stack sizes and work patterns, then uses a dedicated monitoring task to periodically analyze:
 
@@ -37,7 +37,7 @@ The application creates multiple worker tasks with different stack sizes and wor
 
 The monitor identifies tasks with low stack remaining and flags them as warnings or critical risks.
 
-## 📋 Features
+## Features
 
 - ✅ Real-time task state monitoring
 - ✅ Stack usage tracking with high-water mark analysis
@@ -46,7 +46,7 @@ The monitor identifies tasks with low stack remaining and flags them as warnings
 - ✅ Multiple task demonstration with varying stack sizes
 - ✅ Stack overflow hook implementation
 
-## 🔧 Configuration
+## Configuration
 
 Key FreeRTOS configuration options enabled in `FreeRTOSConfig.h`:
 
@@ -57,7 +57,7 @@ Key FreeRTOS configuration options enabled in `FreeRTOSConfig.h`:
 #define configGENERATE_RUN_TIME_STATS           1
 ```
 
-## 🚀 Building and Running
+## Building and Running
 
 ### Prerequisites
 
@@ -125,14 +125,14 @@ FreeRTOS is configured with `configCHECK_FOR_STACK_OVERFLOW 2`, which:
 
 The monitor allocates memory for task status arrays using `pvPortMalloc()`, demonstrating proper heap usage in an RTOS environment.
 
-## 📝 Technical Highlights
+## Technical Highlights
 
 - **RTOS Internals**: Direct use of FreeRTOS kernel APIs for system introspection
 - **Memory Management**: Stack vs heap awareness, proper allocation patterns
 - **Safety Engineering**: Proactive overflow detection and risk assessment
 - **System Observability**: Real-time monitoring without external debuggers
 
-## 🎓 Learning Outcomes
+## Learning Outcomes
 
 This project demonstrates understanding of:
 
@@ -141,7 +141,7 @@ This project demonstrates understanding of:
 3. **System Introspection**: Using OS APIs to analyze runtime behavior
 4. **Safety Patterns**: Detecting and preventing memory-related failures
 
-## 🔗 Related Concepts
+## Related Concepts
 
 - Real-Time Operating Systems (RTOS)
 - Task scheduling and preemption
@@ -149,11 +149,11 @@ This project demonstrates understanding of:
 - Memory safety in embedded systems
 - System monitoring and observability
 
-## 📄 License
+## License
 
 This project is provided as a demonstration of FreeRTOS monitoring capabilities. FreeRTOS itself is licensed under the MIT license.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Built using [FreeRTOS](https://www.freertos.org/) - a market-leading real-time operating system kernel.
 
