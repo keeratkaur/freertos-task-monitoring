@@ -85,7 +85,7 @@ For the simplest setup, use the [FreeRTOS POSIX Simulator](https://github.com/Fr
 3. Update `FreeRTOSConfig.h` as needed
 4. Build using the provided Makefile
 
-## 📊 Sample Output
+## Sample Output
 
 ```
 ========================================
